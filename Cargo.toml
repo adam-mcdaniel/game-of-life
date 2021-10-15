@@ -9,3 +9,10 @@ debug = true
 
 [dependencies]
 rand = "0.8"
+
+[[example]]
+name = "halfmax"
+path = "examples/halfmax.rs"
+
+[dev-dependencies]
+piston_window = "0.120.0"

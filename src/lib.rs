@@ -1,21 +1,21 @@
 use std::{
-    collections::{BTreeMap, BTreeSet, HashMap, HashSet},
+    cmp::{max, min},
+    collections::{HashMap, HashSet},
+    fmt::{Debug, Display, Formatter, Result as FmtResult},
     str::FromStr,
-    fmt::{Display, Debug, Formatter, Result as FmtResult},
-    cmp::{min, max}
 };
 
 use rand::{
     distributions::{Distribution, Uniform},
-    thread_rng
+    thread_rng,
 };
 
-type Map<K, V>= HashMap<K, V>;
-type Set<T>= HashSet<T>;
+type Map<K, V> = HashMap<K, V>;
+type Set<T> = HashSet<T>;
 
 #[derive(Clone, Debug, PartialEq)]
 pub struct World {
-    cells: Map<Position, Cell>,
+    pub cells: Map<Position, Cell>,
 }
 
 impl Display for World {
@@ -33,7 +33,7 @@ impl Display for World {
         // } else {
         //     l + w as i32/2
         // } - width as i32 / 2;
-        let left = l + w as i32/2 - width as i32 / 2;
+        let left = l + w as i32 / 2 - width as i32 / 2;
         // let bottom = if h > height * 2 {
         //     if b.abs() > t.abs() {
         //         b
@@ -43,9 +43,9 @@ impl Display for World {
         // } else {
         //     b + h as i32/2
         // } - height as i32 / 2;
-        let bottom = b + h as i32/2 - height as i32 / 2;
-        
-        self.write(left, bottom, width, height, Some(f))?;
+        let bottom = b + h as i32 / 2 - height as i32 / 2;
+
+        self.write(left, bottom, width, height, None)?;
         writeln!(f, "({}, {})", left, bottom)?;
         Ok(())
     }
@@ -73,7 +73,14 @@ impl World {
         Self::grid(grid)
     }
 
-    fn write(&self, left: i32, bottom: i32, width: usize, height: usize, f: Option<&mut Formatter>) -> FmtResult {
+    fn write(
+        &self,
+        left: i32,
+        bottom: i32,
+        width: usize,
+        height: usize,
+        f: Option<&mut Formatter>,
+    ) -> FmtResult {
         let right = left + width as i32;
         let top = bottom + height as i32;
 
@@ -86,7 +93,7 @@ impl World {
                 for y in 0..height {
                     write!(f, "|")?;
                     for x in left..right {
-                        if self.is_alive(Position(x, top-y)) {
+                        if self.is_alive(Position(x, top - y)) {
                             // write!(f, "\x1b[95m█\x1b[m\x1b[0m")
                             write!(f, "█")
                         } else {
@@ -104,7 +111,7 @@ impl World {
                 for y in 0..height {
                     print!("|");
                     for x in left..right {
-                        if self.is_alive(Position(x, top-y)) {
+                        if self.is_alive(Position(x, top - y)) {
                             // print!("\x1b[95m█\x1b[m\x1b[0m")
                             print!("█")
                         } else {
@@ -124,10 +131,40 @@ impl World {
         self.write(left, bottom, width, height, None).unwrap();
     }
 
-    pub fn grid(rows: impl IntoIterator<Item=impl IntoIterator<Item=usize>>) -> Self {
+    pub fn draw_with_focus(&self, width: usize, height: usize) {
+        let (l, _, w) = self.width();
+        let (b, _, h) = self.height();
+        // let left = if w > width * 2 {
+        //     if l.abs() > r.abs() {
+        //         l
+        //     } else {
+        //         r
+        //     }
+        // } else {
+        //     l + w as i32/2
+        // } - width as i32 / 2;
+        let left = l + w as i32 / 2 - width as i32 / 2;
+        // let bottom = if h > height * 2 {
+        //     if b.abs() > t.abs() {
+        //         b
+        //     } else {
+        //         t
+        //     }
+        // } else {
+        //     b + h as i32/2
+        // } - height as i32 / 2;
+        let bottom = b + h as i32 / 2 - height as i32 / 2;
+
+        self.write(left, bottom, width, height, None).unwrap();
+    }
+
+    pub fn grid(rows: impl IntoIterator<Item = impl IntoIterator<Item = usize>>) -> Self {
         let mut cells = vec![];
         // let mut height = 0;
-        let grid = rows.into_iter().map(|row| row.into_iter().collect::<Vec<_>>()).collect::<Vec<_>>();
+        let grid = rows
+            .into_iter()
+            .map(|row| row.into_iter().collect::<Vec<_>>())
+            .collect::<Vec<_>>();
         let height = grid.len();
         for (y, row) in grid.iter().enumerate() {
             for (x, alive) in row.iter().enumerate() {
@@ -139,17 +176,17 @@ impl World {
         Self::from(cells)
     }
 
-    fn width(&self) -> (i32, i32, usize) {
+    pub fn width(&self) -> (i32, i32, usize) {
         let mut left_most = None;
         let mut right_most = None;
         for Position(x, _) in self.cells.keys() {
             right_most = Some(match right_most {
                 Some(n) => max(n, *x),
-                None => *x
+                None => *x,
             });
             left_most = Some(match left_most {
                 Some(n) => min(n, *x),
-                None => *x
+                None => *x,
             });
         }
 
@@ -158,17 +195,17 @@ impl World {
         (left_most, right_most, (right_most - left_most) as usize + 1)
     }
 
-    fn height(&self) -> (i32, i32, usize) {
+    pub fn height(&self) -> (i32, i32, usize) {
         let mut top_most = None;
         let mut bottom_most = None;
         for Position(_, y) in self.cells.keys() {
             top_most = Some(match top_most {
                 Some(n) => max(n, *y),
-                None => *y
+                None => *y,
             });
             bottom_most = Some(match bottom_most {
                 Some(n) => min(n, *y),
-                None => *y
+                None => *y,
             });
         }
         let bottom_most = bottom_most.unwrap_or(0);
@@ -176,7 +213,7 @@ impl World {
         (bottom_most, top_most, (top_most - bottom_most) as usize + 1)
     }
 
-    fn is_alive(&self, pos: Position) -> bool {
+    pub fn is_alive(&self, pos: Position) -> bool {
         self.cells.contains_key(&pos)
     }
 
@@ -205,7 +242,10 @@ impl FromStr for World {
     }
 }
 
-impl<T> From<T> for World where T: IntoIterator<Item=Position> {
+impl<T> From<T> for World
+where
+    T: IntoIterator<Item = Position>,
+{
     fn from(positions: T) -> Self {
         let mut cells = Map::new();
         for pos in positions {
@@ -222,7 +262,6 @@ impl Iterator for World {
         let mut considered = Set::new();
         let old_self = self.clone();
         for cell in self.cells.clone().values() {
-
             let adjacent_count = old_self.count_neighbors(cell.pos);
             if adjacent_count < 2 || adjacent_count > 3 {
                 self.cells.remove(&cell.pos);
@@ -252,7 +291,6 @@ impl Iterator for World {
     }
 }
 
-
 #[derive(Clone, Copy, PartialEq, Eq, PartialOrd, Ord, Hash)]
 pub struct Position(pub i32, pub i32);
 
@@ -264,16 +302,13 @@ impl Debug for Position {
 
 #[derive(Clone, Copy, Debug, PartialEq, Eq, PartialOrd, Ord, Hash)]
 pub struct Cell {
-    pos: Position,
+    pub pos: Position,
     neighbor: u8,
 }
 
 impl From<Position> for Cell {
     fn from(pos: Position) -> Self {
-        Cell {
-            pos,
-            neighbor: 0,
-        }
+        Cell { pos, neighbor: 0 }
     }
 }
 
@@ -293,9 +328,7 @@ impl Iterator for Cell {
 
                 Some(Position(self.pos.0 + x as i32, self.pos.1 + y as i32))
             }
-            _ => {
-                None
-            }
+            _ => None,
         }
     }
 }

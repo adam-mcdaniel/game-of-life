@@ -32,7 +32,7 @@ Everyone who has learned to program at this point <a href="https://github.com/se
 
 When making a Game of Life simulator, though, most people just get the minimal, barebones simulation working on a glider or a few other patterns before finishing up the project, and more importantly, we only ever learn how to implement the Game on a <i>statically sized grid</i>. How do the more complicated simulators on the internet support <i><b>theoretically infinitely sized worlds🧫???</i></b>
 
-Thinking about this got me curious, so I took a stab at it myself and I think I did an okay job!
+Thinking about this got me curious, so I took a stab at it myself. I think I did an okay job!
 </div>
 
 ## How does it work?

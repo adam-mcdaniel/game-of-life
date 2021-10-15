@@ -2,8 +2,8 @@
 A game of life🔬 simulator on an infinite♾️ plane
 
 <p float="right">
-  <a href="https://github.com/adam-mcdaniel/game-of-life/blob/main/examples/random.rs"><img src="./assets/random.gif" width="65%"/></a>
-  <a href="https://github.com/adam-mcdaniel/game-of-life/blob/main/examples/halfmax.rs"><img src="./assets/halfmax.gif" width="33.5%"/></a>
+  <img src="./assets/random.gif" width="65%"/>
+  <img src="./assets/halfmax.gif" width="33.5%"/>
 </p>
 
 ***NOTE: This is a toy project! I did this just for fun, not as a packaged product.***
@@ -19,7 +19,7 @@ I'm a *bored* sophomore in college working on projects to fill the time. If you 
 ## What possessed me to write yet another Game of Life🦠 simulator?
 
 <div align="left">
-<a href="https://github.com/adam-mcdaniel/game-of-life/blob/main/examples/glider-gun.rs"><img align='right' src="assets/glider-gun.gif" width="30%"/></a>
+<img align='right' src="assets/glider-gun.gif" width="30%"/>
 Everyone who has learned to program at this point <a href="https://github.com/search?q=game+of+life&type=code">has probably written a Game of Life simulator</a>; it's a bit of a rite of passage, like a more sophisticated "Hello World!" program. For those of you who haven't seen the Game of Life yet, it's a <a href="https://en.wikipedia.org/wiki/Cellular_automaton">cellular automata</a> performed on a 2D plane with the following rules:
 
 <h4>Rules</h4>

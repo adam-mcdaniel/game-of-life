@@ -24,25 +24,8 @@ impl Display for World {
         let (b, _, h) = self.height();
         let width = 80;
         let height = 50;
-        // let left = if w > width * 2 {
-        //     if l.abs() > r.abs() {
-        //         l
-        //     } else {
-        //         r
-        //     }
-        // } else {
-        //     l + w as i32/2
-        // } - width as i32 / 2;
+
         let left = l + w as i32 / 2 - width as i32 / 2;
-        // let bottom = if h > height * 2 {
-        //     if b.abs() > t.abs() {
-        //         b
-        //     } else {
-        //         t
-        //     }
-        // } else {
-        //     b + h as i32/2
-        // } - height as i32 / 2;
         let bottom = b + h as i32 / 2 - height as i32 / 2;
 
         self.write(left, bottom, width, height, None)?;

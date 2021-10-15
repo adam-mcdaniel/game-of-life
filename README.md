@@ -49,9 +49,9 @@ For some, it might be painfully obvious that the solution is to *only* store the
 The entire algorithm works as follows for each iteration:
 1. For every live cell, if it is overcrowded *(>3 neighbors)* or starving *(<2 neighbors)*, remove it from the next iteration.
 2. Additionally, for every neighboring position of that cell *(regardless of whether it was removed)*:
-   3. If the position has already been considered, skip the following steps. Otherwise, add the position to the set of previously considered positions.
-   4. If the position is overcrowded or starving, remove the cell at that position from the next iteration *(if it exists)*.
-   5. If the position has ***exactly three live neighbors, however***, insert a cell at that position in the next iteration.
+3. If the position has already been considered, skip the following steps. Otherwise, add the position to the set of previously considered positions.
+4. If the position is overcrowded or starving, remove the cell at that position from the next iteration *(if it exists)*.
+5. If the position has ***exactly three live neighbors, however***, insert a cell at that position in the next iteration.
 6. Voila! You have the next iteration of the world!
 
 To see it in action, run some of the [examples](https://github.com/adam-mcdaniel/game-of-life/tree/main/examples)!

@@ -41,7 +41,10 @@ The key to the solution is expressed in the wording of the problem itself: to ma
 
 So what does that mean in practice? Well, it means that any implementation using statically allocated arrays for the world is already out of the running. But what about dynamically sized arrays? Although, yes, in theory these are possible, they would be **incredibly** inefficient. Every time a glider moved beyond a corner of the world, the program would have to allocate a new row, *and* a new column: which would compound as the glider keeps going! Your program would ***very quickly*** run out of memory, unless it could deallocate parts of the grid it wasn't using, which would take quite a bit of time on its own.
 
+<img align='left' src="assets/unbounded.gif" width="30%"/>
+
 For some, it might be painfully obvious that the solution is to *only* store the live cells mapped from their position. So for a glider traversing the entire world for an infinitely long, your program only every stores data for ***5 cells at once!*** This has the added benefit that this makes it very simple to only ever consider cells which are already neighbors of live cells.
+
 
 The entire algorithm works as follows for each iteration:
 1. For every live cell, if it is overcrowded *(>3 neighbors)* or starving *(<2 neighbors)*, remove it from the next iteration.
@@ -51,40 +54,7 @@ The entire algorithm works as follows for each iteration:
    5. If the position has ***exactly three live neighbors, however***, insert a cell at that position in the next iteration.
 6. Voila! You have the next iteration of the world!
 
-## Example Code
-
-Here is some example code using the simulator!
-
-```rs
-// A simulation of a glider
-use game_of_life::World;
-
-fn main() {
-    let world = World::grid([
-         [1, 1, 1],
-         [0, 0, 1],
-         [0, 1, 0]
-    ]);
-    for iteration in world {
-        println!("{}", iteration);
-    }
-}
-```
-
-This example demonstrates the sim's ability to handle dozens of thousands of cells at once!
-
-```rs
-// A simulation of the Halfmax breeder
-use game_of_life::World;
-use std::str::FromStr;
-
-fn main() {
-    let world = World::from_str(include_str!("examples/halfmax.txt")).unwrap();
-    for iteration in world {
-        println!("{}", iteration);
-    }
-}
-```
+To see it in action, run some of the [examples](https://github.com/adam-mcdaniel/game-of-life/tree/main/examples)!
 
 ## Usage
 

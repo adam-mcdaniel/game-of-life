@@ -2,8 +2,8 @@
 A game of life🔬 simulator on an infinite♾️ plane
 
 <p float="right">
-  <a href="https://github.com/adam-mcdaniel/game-of-life/blob/main/examples/random.rs"><img src="./assets/random.gif" width="65.5%"/></a>
-  <a href="https://github.com/adam-mcdaniel/game-of-life/blob/main/examples/halfmax.rs"><img src="./assets/halfmax.gif" width="34%"/></a>
+  <a href="https://github.com/adam-mcdaniel/game-of-life/blob/main/examples/random.rs"><img src="./assets/random.gif" width="65%"/></a>
+  <a href="https://github.com/adam-mcdaniel/game-of-life/blob/main/examples/halfmax.rs"><img src="./assets/halfmax.gif" width="33.5%"/></a>
 </p>
 
 ***NOTE: This is a toy project! I did this just for fun, not as a packaged product.***

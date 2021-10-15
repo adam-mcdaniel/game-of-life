@@ -39,9 +39,9 @@ Thinking about this got me curious, so I took a stab at it myself and I think I 
 
 The key to the solution is expressed in the wording of the problem itself: to make an implementation agnostic of infinitely sized worlds, the implementation *must not depend on the world's size*.
 
-So what does that mean in practice? Well, it means that any implementation using statically allocated arrays for the world is already out of the running. But what about dynamically sized arrays? Although, yes, in theory these are possible, they would be **incredibly** inefficient. Every time a glider moved beyond a corner of the world, the program would have to allocate a new row, *and* a new column: which would compound as the glider keeps going! Your program would ***very quickly*** run out of memory, unless it could deallocate parts of the grid it wasn't using, which would take quite a bit of time on its own.
-
 <img align='left' src="assets/unbounded.gif" width="30%"/>
+
+So what does that mean in practice? Well, it means that any implementation using statically allocated arrays for the world is already out of the running. But what about dynamically sized arrays? Although, yes, in theory these are possible, they would be **incredibly** inefficient. Every time a glider moved beyond a corner of the world, the program would have to allocate a new row, *and* a new column: which would compound as the glider keeps going! Your program would ***very quickly*** run out of memory, unless it could deallocate parts of the grid it wasn't using, which would take quite a bit of time on its own.
 
 For some, it might be painfully obvious that the solution is to *only* store the live cells mapped from their position. So for a glider traversing the entire world for an infinitely long, your program only every stores data for ***5 cells at once!*** This has the added benefit that this makes it very simple to only ever consider cells which are already neighbors of live cells.
 
